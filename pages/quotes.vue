@@ -8,6 +8,7 @@
             <blockquote class="otro-blockquote">"{{ quote.quote }}"
                 <span>{{ quote.character }}</span>
             </blockquote>
+            <img class="otro-blockquote otro-image" :src="this.character" alt="alternatetext">
             <button class="refresh-button" @click="$fetch">Refresh</button>
         </div>
     </div>
@@ -21,7 +22,8 @@ import ckNavBar from '../components/ckNavBar.vue'
 export default {
     data() {
         return{
-            quote: {}
+            quote: {},
+            character: {}
         }
     },
   components: { ckNavBar },
@@ -30,6 +32,11 @@ export default {
   async fetch() {
     this.quote = await fetch(`https://animechan.vercel.app/api/random`)
         .then(res => res.json())
+
+    let character = await fetch(`https://api.jikan.moe/v4/characters?q=${this.quote.character}`)
+        .then(res => res.json())
+
+    this.character = character?.data[0]?.images?.jpg?.image_url
   }
 }
 </script>
@@ -72,6 +79,10 @@ export default {
 
 .otro-anime {
   text-align: center;
+}
+
+.otro-image {
+    margin:25px auto;
 }
 
 .container {
