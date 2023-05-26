@@ -8,7 +8,9 @@
             <blockquote class="otro-blockquote">"{{ quote.quote }}"
                 <span>{{ quote.character }}</span>
             </blockquote>
-            <img class="otro-blockquote otro-image" :src="this.character" alt="alternatetext">
+            <blockquote class="otro-blockquote">
+              <img class="otro-image" :src="this.character" alt="alternatetext">
+            </blockquote>
             <button class="refresh-button" @click="$fetch">Refresh</button>
         </div>
     </div>
@@ -33,7 +35,7 @@ export default {
     this.quote = await fetch(`https://animechan.vercel.app/api/random`)
         .then(res => res.json())
 
-    let character = await fetch(`https://api.jikan.moe/v4/characters?q=${this.quote.character}`)
+    let character = await fetch(`https://api.jikan.moe/v4/characters?q=${this.quote.character} ${this.quote.anime}`)
         .then(res => res.json())
 
     this.character = character?.data[0]?.images?.jpg?.image_url
@@ -82,12 +84,12 @@ export default {
 }
 
 .otro-image {
-    margin:25px auto;
+    
 }
 
 .container {
   position: relative;
-  height: 93vh;
+  height: 100vh;
   width: 100vw;
 }
 
